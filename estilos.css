@@ -1,0 +1,58 @@
+:root {
+    --colorBorde: #BBD0CC;
+    --colorExito: rgb(10, 148, 10);
+    --colorError: rgb(161, 5, 5);
+    --colorBotonDeshabilitado: #ccc;
+    --espaciado: 10px;
+    --radioBorde: 10px;
+    --fuente: Arial, sans-serif;
+}
+
+body {
+    background-image: url('img/floral-flowers-cute-girl-wallpaper-ipad-dainty-outline-line-drawing-hd-29-10-2024-1730269112-hd-wallpaper.webp');
+    background-size: cover;
+    font-family: var(--fuente);
+    background-image: image(img);
+    padding: 20px;
+}
+
+.formulario {
+    max-width: 600px;
+    margin: auto;
+    border: 5px solid var(--colorBorde);
+    padding: 20px;
+    border-radius: var(--radioBorde);
+    background-color: white;
+    box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.5);
+}
+
+input:not([type="radio"]):not([type="checkbox"]),
+select {
+    width: 100%;
+    margin: 5px 0 var(--espaciado);
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.error {
+    color: var(--colorError);
+    font-size: 0.9em;
+}
+
+.success {
+    color: var(--colorExito);
+    font-weight: bold;
+    margin-bottom: var(--espaciado);
+}
+
+.valido {
+    border: 2px solid var(--colorExito);
+}
+
+.invalido {
+    border: 2px solid var(--colorError);
+}
+
+button:disabled {
+    background-color: var(--colorBotonDeshabilitado);
+}

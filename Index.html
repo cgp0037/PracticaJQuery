@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="estilos.css">
+    <title>Comprobación en formulario</title>
+</head>
+
+<body>
+
+    <div class="formulario">
+
+        <form id="registro" onsubmit="return false;">
+
+            <div>
+                <h1> Formulario de Inscripción </h1>
+            </div>
+            <label>Nombre completo</label>
+            <input type="text" id="nombre">
+            <div class="error" id="errorNombre"></div>
+
+            <label>Correo electrónico</label>
+            <input type="email" id="correo">
+            <div class="error" id="errorCorreo"></div>
+
+            <label>Contraseña</label>
+            <input type="password" id="contrasena">
+            <div class="error" id="errorContrasena"></div>
+
+            <label>Confirmar contraseña</label>
+            <input type="password" id="confirmar">
+            <div class="error" id="errorConfirmar"></div>
+
+            <label>Fecha de nacimiento</label>
+            <input type="date" id="fecha">
+            <div class="error" id="errorFecha"></div>
+
+            <div>
+                <label>Género</label><br>
+                <div class="error" id="errorGenero"></div>
+                <input type="radio" name="genero" value="hombre"> Hombre
+                <input type="radio" name="genero" value="mujer"> Mujer
+            </div>
+
+
+            <br>
+            <input type="checkbox" id="condiciones"> Acepto los términos y condiciones
+            <div class="error" id="errorCondiciones"></div>
+
+            <br>
+            <br>
+            <button id="enviar" disabled>Enviar</button>
+            <div id="mensajeExito" class="success" style="display: none;">¡Formulario enviado con éxito!</div>
+        </form>
+    </div>
+
+    <script>
+        function validarFormulario() {
+            let valido = true;
+
+            // Validando nombre
+            const nombre = $("#nombre").val().trim();
+            if (nombre.length < 3) {
+                $("#errorNombre").text("Debe tener al menos 3 caracteres");
+                $("#nombre").addClass("invalido").removeClass("valido");
+                valido = false;
+            } else {
+                $("#errorNombre").text("");
+                $("#nombre").addClass("valido").removeClass("invalido");
+            }
+
+            // Validando correo
+            const correo = $("#correo").val().trim();
+            if (correo.length < 5) {
+                $("#errorCorreo").text("Debe tener al menos 5 caracteres");
+                $("#correo").addClass("invalido").removeClass("valido");
+                valido = false;
+            } else {
+                $("#errorCorreo").text("");
+                $("#correo").addClass("valido").removeClass("invalido");
+            }
+
+            // Validando contraseña
+            const contrasena = $("#contrasena").val();
+            if (contrasena.length < 6) {
+                $("#errorContrasena").text("Mínimo 6 caracteres");
+                $("#contrasena").addClass("invalido").removeClass("valido");
+                valido = false;
+            } else {
+                $("#errorContrasena").text("");
+                $("#contrasena").addClass("valido").removeClass("invalido");
+            }
+
+            // Confirmar contraseña
+            const confirmar = $("#confirmar").val();
+            if (confirmar !== contrasena || confirmar === "") {
+                $("#errorConfirmar").text("Las contraseñas no coinciden");
+                $("#confirmar").addClass("invalido").removeClass("valido");
+                valido = false;
+            } else {
+                $("#errorConfirmar").text("");
+                $("#confirmar").addClass("valido").removeClass("invalido");
+            }
+
+            // Validando mayor de 18
+            const fecha = new Date($("#fecha").val());
+            const hoy = new Date();
+            const edad = hoy.getFullYear() - fecha.getFullYear();
+            const cumpleEsteAnio = new Date(hoy.getFullYear(), fecha.getMonth(), fecha.getDate()) > hoy;
+            const edadFinal = cumpleEsteAnio ? edad - 1 : edad;
+            if (isNaN(edadFinal) || edadFinal < 18) {
+                $("#errorFecha").text("Debes tener al menos 18 años");
+                $("#fecha").addClass("invalido").removeClass("valido");
+                valido = false;
+            } else {
+                $("#errorFecha").text("");
+                $("#fecha").addClass("valido").removeClass("invalido");
+            }
+
+            // Confirmación de Género
+            if (!$("input[name='genero']:checked").val()) {
+                $("#errorGenero").text("Selecciona una opción");
+                valido = false;
+            } else {
+                $("#errorGenero").text("");
+            }
+
+            // Condiciones
+            if (!$("#condiciones").is(":checked")) {
+                $("#errorCondiciones").text("Debes aceptar los términos");
+                valido = false;
+            } else {
+                $("#errorCondiciones").text("");
+            }
+
+            $("#enviar").prop("disabled", !valido);
+            return valido;
+        }
+
+        // Revisión en tiempo real
+        $("input").on("input change", validarFormulario);
+        $("input[type=radio]").on("change", validarFormulario);
+        $("#condiciones").on("change", validarFormulario);
+
+        // Enviar formulario
+        $("#enviar").on("click", function () {
+            if (validarFormulario()) {
+                $("#mensajeExito").show();
+                $("#registro")[0].reset();
+                $("input").removeClass("valido invalido");
+                $(".error").text("");
+                $("#enviar").prop("disabled", true);
+            }
+        });
+    </script>
+</body>
+
+</html>
